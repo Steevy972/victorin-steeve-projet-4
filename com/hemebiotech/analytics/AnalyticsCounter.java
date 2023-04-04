@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class AnalyticsCounter implements ISymptomReader, ISymptomWriter {
+public class AnalyticsCounter {
+
+	private static final String filepathSorti = "result.out";
 
 	public ISymptomReader reader;
 	public ISymptomWriter writer;
@@ -21,45 +23,18 @@ public class AnalyticsCounter implements ISymptomReader, ISymptomWriter {
 	public Map<String, Integer> counter;
 
 	private String filepath;
-	private static final String filepathSorti = "result.out";
-
-	public AnalyticsCounter(List<String> symptoms) {
-
-	}
 
 	public AnalyticsCounter(String filepathFromParameter) {
 		this.filepath = filepathFromParameter;
 	}
 
 	public AnalyticsCounter(ISymptomReader reader, ISymptomWriter writer) {
-
 		this.reader = reader;
 		this.writer = writer;
 	}
 
-	@Override
-	public List<String> getSymptoms() {
-		List<String> symptoms = new ArrayList<String>();
-
-		if (this.filepath != null) {
-			try {
-				BufferedReader reader = new BufferedReader(new FileReader(this.filepath));
-				{
-					String line = reader.readLine();
-
-					while (line != null) {
-
-						symptoms.add(line);
-						line = reader.readLine();
-					}
-					reader.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-		return symptoms;
+	public List<String> getSymptoms(){
+		return this.reader.getSymptoms();
 	}
 
 	public Map<String, Integer> countSymptoms(List<String> symptoms) {
@@ -68,7 +43,7 @@ public class AnalyticsCounter implements ISymptomReader, ISymptomWriter {
 
 		for (String symptom : symptoms) {
 
-			countedSymptoms.put(symptom, countedSymptoms.getOrDefault(symptom, 1) + 1);
+			countedSymptoms.put(symptom, countedSymptoms.getOrDefault(symptom, 0) + 1);
 
 		}
 		return countedSymptoms;
@@ -84,52 +59,8 @@ public class AnalyticsCounter implements ISymptomReader, ISymptomWriter {
 		return sortedSymptoms;
 	}
 
-	@Override
-	public void writeSymptoms(Map<String, Integer> symptoms) {
-		// TODO Stub de la méthode généré automatiquement
-		try {
-			FileWriter writer = new FileWriter(new File(filepathSorti));
-			for (String sympetom : symptoms.keySet()) {
-				writer.write(sympetom + ":" + symptoms.get(sympetom) + "\n");
-			}
-			writer.close();
-
-		}
-
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-
+	public void writeSymptoms(Map<String, Integer> symptoms){
+		this.writer.writeSymptoms(symptoms);
 	}
 
-	public static void main(String args[]) {
-
-		AnalyticsCounter reader = new AnalyticsCounter("symptoms.txt");
-		AnalyticsCounter writer = new AnalyticsCounter(filepathSorti);
-		AnalyticsCounter counter = new AnalyticsCounter(reader, writer);
-
-		List<String> symptoms = reader.getSymptoms();
-
-		// for (String sort : symptoms) {
-
-		// System.out.println("Symptom " + sort + " -> ");
-		// }
-		
-
-		Map<String, Integer> countedSymptom = counter.countSymptoms(symptoms);
-
-		// for (String soret : countedSymptom.keySet()) {
-
-		// System.out.println("Symptom " + soret + " -> " + countedSymptom.get(soret));
-		// }
-
-		Map<String, Integer> sortedSymptoms = counter.sortSymptoms(countedSymptom);
-		for (String key : sortedSymptoms.keySet()) {
-
-			
-			counter.writeSymptoms(sortedSymptoms);
-
-		}
-
 	}
-}
