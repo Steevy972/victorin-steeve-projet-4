@@ -1,11 +1,21 @@
+/**
+* Compte les symptoms
+*
+
+*
+* @return void
+* @return sortedSymptoms
+* @return countedSymptoms
+
+* @author Steeve VICTORIN
+* @version 1.0
+*/
+
+
+
+
 package com.hemebiotech.analytics;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,54 +23,48 @@ import java.util.TreeMap;
 
 public class AnalyticsCounter {
 
-	private static final String filepathSorti = "result.out";
+  public ISymptomReader reader;
+  public ISymptomWriter writer;
 
-	public ISymptomReader reader;
-	public ISymptomWriter writer;
+  public Map<String, Integer> countedSymptoms;
+  public Map<String, Integer> sortedSymptoms;
+  public Map<String, Integer> counter;
 
-	public Map<String, Integer> countedSymptoms;
-	public Map<String, Integer> sortedSymptoms;
-	public Map<String, Integer> counter;
+  public AnalyticsCounter(ISymptomReader reader, ISymptomWriter writer) {
+    this.reader = reader;
+    this.writer = writer;
+  }
 
-	private String filepath;
+  public List<String> getSymptoms() {
+    return this.reader.getSymptoms();
+  }
 
-	public AnalyticsCounter(String filepathFromParameter) {
-		this.filepath = filepathFromParameter;
-	}
+  /** countedSymptoms compte les symptoms. */
+  public Map<String, Integer> countSymptoms(List<String> symptoms) {
 
-	public AnalyticsCounter(ISymptomReader reader, ISymptomWriter writer) {
-		this.reader = reader;
-		this.writer = writer;
-	}
+    HashMap<String, Integer> countedSymptoms = new HashMap<>();
 
-	public List<String> getSymptoms(){
-		return this.reader.getSymptoms();
-	}
+    for (String symptom : symptoms) {
 
-	public Map<String, Integer> countSymptoms(List<String> symptoms) {
+      countedSymptoms.put(symptom, countedSymptoms.getOrDefault(symptom, 0) + 1);
 
-		HashMap<String, Integer> countedSymptoms = new HashMap<>();
+    }
+    return countedSymptoms;
 
-		for (String symptom : symptoms) {
+  }
 
-			countedSymptoms.put(symptom, countedSymptoms.getOrDefault(symptom, 0) + 1);
+  /** sortedSymptoms sort les symptoms en les triant aphabétiquement. */
+  public Map<String, Integer> sortSymptoms(Map<String, Integer> symptoms) {
 
-		}
-		return countedSymptoms;
+    TreeMap<String, Integer> sortedSymptoms = new TreeMap<>();
 
-	}
+    sortedSymptoms.putAll(symptoms);
 
-	public Map<String, Integer> sortSymptoms(Map<String, Integer> symptoms) {
+    return sortedSymptoms;
+  }
 
-		TreeMap<String, Integer> sortedSymptoms = new TreeMap<>();
+  public void writeSymptoms(Map<String, Integer> symptoms) {
+    this.writer.writeSymptoms(symptoms);
+  }
 
-		sortedSymptoms.putAll(symptoms);
-
-		return sortedSymptoms;
-	}
-
-	public void writeSymptoms(Map<String, Integer> symptoms){
-		this.writer.writeSymptoms(symptoms);
-	}
-
-	}
+}
