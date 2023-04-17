@@ -5,8 +5,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
 
+/**
+* Implementation de ISymptomWriter.
+* 
+* @author Steeve VICTORIN
+*
+*/
 public class WriteSymptomDataToFile implements ISymptomWriter {
-  /** writeSymptoms ecrit les symptoms dans le fichier result.out . */
+  /**
+  * Ecriture du fichier.
+  */
   public void writeSymptoms(Map<String, Integer> symptoms) {
 
     try {

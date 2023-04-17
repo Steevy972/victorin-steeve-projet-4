@@ -1,6 +1,3 @@
-/** Simple brute force implementation. */
-
-
 package com.hemebiotech.analytics;
 
 import java.io.BufferedReader;
@@ -9,15 +6,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+* Implementation de ISymptomReader.
+* 
+* @author Steeve VICTORIN
+*/
 public class ReadSymptomDataFromFile implements ISymptomReader {
 
   private String filepath;
 
   /**
-    * aa.
-    * @param filepath a full or partial path to file with symptom strings in it, one per line
-    */
+  * Lecture du fichier.
+  * 
+  * @param filepath un chemin complet ou partiel vers un fichier
+  *                              contenant des chaines de symptomes, un par ligne
+  */
   public ReadSymptomDataFromFile(String filepath) {
     this.filepath = filepath;
   }

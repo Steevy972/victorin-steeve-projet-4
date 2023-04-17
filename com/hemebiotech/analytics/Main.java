@@ -1,13 +1,20 @@
-/** le Main. */
-
 package com.hemebiotech.analytics;
 
 import java.util.List;
 import java.util.Map;
 
+/**
+* Le point d'entree du programme.
+* 
+* @author Steeve VICTORIN
+*
+*/
 public class Main {
 
-  /** Le programme qui lit et ecrit les Symptoms. */
+  /**
+  *Instancie les objet et rappelle les differentes méthodes d'AnalyticsCounter.
+  * @param args un tableau d'argument de ligne de commande
+  */
   public static void main(String[] args) {
 
     ISymptomReader reader = new ReadSymptomDataFromFile("symptoms.txt");
